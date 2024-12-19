@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="messages"></div>
+    <form action="" id="form">
+        <input type="text" id="msg" autocomplete="off">
+        <button type="submit">send</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var ch=document.getElementById("msg")
+        var socket=io();
+        document.getElementById("form").onsubmit=function(e) {
+            e.preventDefault()
+            socket.emit("mess",ch.value)
+            ch.value=""
+            return false
+        }
+        socket.on("mess",function (msg) {
+            var p=document.createElement("p")
+            p.innerHTML=msg
+            document.getElementById("messages").append(p)
+        })
+    </script>
+</body>
+</html>
