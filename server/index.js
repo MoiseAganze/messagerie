@@ -1,22 +1,19 @@
-const app=require("express")()
+const express = require("express");
+const cors = require("cors");
+const corsOptions = require("./config/cors");
 
-const server=require("http").createServer(app)
+const app = express();
+const authRoutes = require("./routes/authRoutes");
+const otherRoutes = require("./routes/otherRoutes");
 
-const io =require("socket.io")(server)
+app.use(express.json());
+app.use(cors(corsOptions));
+app.use("/", authRoutes);
+app.use("/", otherRoutes);
 
-app.get("/",(req,res)=>{
-    res.sendFile(`${__dirname}/public/index.html`)
-})
-io.on('connection',(socket)=>{
-    console.log("un user s'est connecte");
-    socket.on('disconnect',()=>{
-        console.log("deconnected");
-        
-    })
-    socket.on("mess",(msg)=>{
-        io.emit('mess',msg)
-        
-    })
-    
-})
-server.listen(10000,()=>console.log("port 10000"))
+const http = require("http").createServer(app);
+require("./socket/io")(http);
+
+http.listen(10000, () => {
+  console.log("Serveur démarré sur le port 10000");
+});

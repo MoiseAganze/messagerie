@@ -70,7 +70,7 @@ export default function ListConversations({
       <div className="w-full min-height-screen bg-gray">
         <Navbar2 />
         <div className="flex flex-col gap-1 mt-3 overflow-x-hidden">
-          {conversations.map((item, i) => (
+          {conversations?.map((item, i) => (
             <Message key={i} conversation={item} />
           ))}
         </div>
