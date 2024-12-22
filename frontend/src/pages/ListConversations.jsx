@@ -1,61 +1,67 @@
 import { useState } from "react";
 import { Navbar2 } from "../components/Nav";
 import { formatHourMinute } from "../utils/formatsDate";
+import { useFetch } from "../hooks/useFetch";
+import { reduceText } from "../utils/reduceText";
+import { whoIsFriend } from "../utils/whoIsFriend";
 
 export default function ListConversations({
   open,
+  setOpen,
   conversations,
   setConversation,
+  user_data,
+  setFriend,
 }) {
   const [selected, setSelected] = useState(null);
   const handleSelect = (item) => {
     setSelected(item);
   };
-  const Message = ({ conversation, key }) => {
+  const Message = ({ conversation }) => {
+    const { datas, loading } = useFetch(`/messages/${conversation._id}`);
+
     return (
       <div
         onClick={() => {
-          setConversation(conversation);
-          handleSelect(conversation.id);
+          setOpen(false);
+          setConversation(datas);
+          handleSelect(conversation._id);
+          setFriend(whoIsFriend(user_data.id, conversation.participants));
         }}
         className={`
-          ${selected == conversation.id && "bg-base-100"} 
-          ${
-            key == 2 && "bg-base-100"
-          } w-full flex justify-start gap-1 rounded-3xl py-2 px-3 cursor-pointer transition hover:translate-x-2`}
+          ${selected == conversation._id && "bg-base-100"} 
+          ${"bg-base-100"} w-full flex justify-start gap-1 rounded-3xl py-2 px-3 cursor-pointer transition hover:translate-x-2`}
       >
         <div
           role="button"
-          className={`avatar placeholder mr-4 ${
-            conversation.isOnline && "online"
-          }`}
+          className={`avatar placeholder mr-4 ${1 == 1 && "online"}`}
         >
           <div className="bg-orange-700 text-sky-100  w-12 h-12 rounded-full">
             <span className="text-xl font-bold">
-              {conversation.otherPerson.name[0]}
+              {whoIsFriend(user_data.id, conversation.participants).name[0]}
             </span>
           </div>
         </div>
         <button className="w-full flex flex-col">
           <div className="w-full flex justify-between">
             <p className="text-base font-bold">
-              {conversation.otherPerson.name}
+              {whoIsFriend(user_data.id, conversation.participants).name}
             </p>
             <p
               className={`text-sm ${
                 conversation.status == "vu" ? "" : "text-accent font-bold"
               }`}
             >
-              {formatHourMinute(conversation.date)}
+              {formatHourMinute(conversation.lastMessage.createdAt)}
             </p>
           </div>
-          {conversation.writing ? (
+          {1 == 0 ? (
             <p className="text-accent animate-pulse">
               ecrit {"  "}
               <span className="text-3xl font-extrabold animate-pulse">...</span>
             </p>
           ) : (
-            <p>{conversation.messages[0].text}</p>
+            <p>{reduceText(conversation.lastMessage.text, 20)}</p>
           )}
         </button>
       </div>

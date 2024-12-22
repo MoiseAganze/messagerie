@@ -2,7 +2,7 @@ export function Navbar({ titre, handleOpen, online }) {
   return (
     <div
       className={`navbar bg-base-100 flex ${
-        titre ? "justify-between" : "justify-end"
+        titre ? "justify-between" : "justify-between"
       } px-2 lg:px-4`}
     >
       <div

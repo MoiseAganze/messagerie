@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { whoIsFriend } from "../utils/whoIsFriend";
 
-export default function InputCont({ sendMessage }) {
+export default function InputCont({ sendMessage, user_data, data }) {
   const [message, setMessage] = useState("");
   return (
     <div className="p-3 w-full flex justify-center">
@@ -16,12 +17,17 @@ export default function InputCont({ sendMessage }) {
           <button className="btn btn-circle">
             <img src="/paperclip.png" className="w-5 h-5" alt="" />
           </button>
-          <button
-            className="btn btn-circle"
-            onClick={() => sendMessage(message)}
-          >
-            <img src="/send.png" className="w-5 h-5" alt="" />
-          </button>
+          {data && (
+            <button
+              className="btn btn-circle"
+              onClick={() => {
+                sendMessage(user_data.id, data[0].conversationId, message);
+                setMessage("");
+              }}
+            >
+              <img src="/send.png" className="w-5 h-5" alt="" />
+            </button>
+          )}
         </div>
       </div>
     </div>
