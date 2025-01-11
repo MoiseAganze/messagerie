@@ -2,8 +2,12 @@ const mongoose = require("mongoose");
 const User = require("../models/User");
 
 const connectDB = async () => {
+  const MONGO_URI =
+    process.env.NODE_ENV === "production"
+      ? process.env.MONGO_URI_PROD
+      : process.env.MONGO_URI_LOCAL;
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI);
+    const conn = await mongoose.connect(MONGO_URI);
     const bot_exist = await User.exists({ name: "SiteBot" });
     if (!bot_exist) {
       const botUser = new User({
