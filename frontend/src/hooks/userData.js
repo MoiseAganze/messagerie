@@ -5,7 +5,6 @@ export const userData = () => {
   const token = localStorage.getItem("kento");
   if (token) {
     const userdata = parseJwt(token);
-    console.log(userdata);
 
     return {
       user_data: userdata,

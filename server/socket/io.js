@@ -41,11 +41,18 @@ module.exports = function (http) {
         text
       );
 
-      // Trouver le destinataire
+      const sender = users.find((user) => user.userId === senderId);
       const receiver = users.find((user) => user.userId === receiverId);
+
+      if (sender) {
+        console.log("sender: " + sender.socketId);
+        message._doc.isSender = true;
+        io.to(sender.socketId).emit("receive-message", message);
+      }
       if (receiver) {
+        console.log("receiver: " + receiver.socketId);
+        message._doc.isSender = false;
         io.to(receiver.socketId).emit("receive-message", message);
-        console.log(`Message envoyé de ${senderId} à ${receiverId}: ${text}`);
       } else {
         console.error(`Destinataire ${receiverId} introuvable`);
       }

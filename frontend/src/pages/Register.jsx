@@ -1,14 +1,17 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
 import useSubmit from "../hooks/useSubmit";
 
 const Register = () => {
+  const nav = useNavigate();
   const { handleChange, handleSubmit, loading, datasForm } = useSubmit(
     { name: "", email: "", password: "", cpassword: "" },
     "http://localhost:10000/register",
-    "inscription reussi"
+    "inscription reussi",
+    nav,
+    "/"
   );
   return (
     <>
@@ -21,7 +24,7 @@ const Register = () => {
             <form className="card-body" onSubmit={handleSubmit}>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">Nom</span>
+                  <span className="label-text">Pseudo</span>
                 </label>
                 <input
                   type="text"

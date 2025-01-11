@@ -1,13 +1,16 @@
 import React from "react";
 import { Toaster } from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useSubmit from "../hooks/useSubmit";
 
 const Login = () => {
+  const nav = useNavigate();
   const { handleChange, handleSubmit, loading, datasForm } = useSubmit(
     { email: "", password: "" },
     "http://localhost:10000/login",
-    "connecté"
+    "connecté",
+    nav,
+    "/"
   );
   return (
     <>

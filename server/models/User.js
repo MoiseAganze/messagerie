@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const UserSchema = new mongoose.Schema(
   {
@@ -9,6 +10,7 @@ const UserSchema = new mongoose.Schema(
       unique: true,
       trim: true,
     },
+
     email: {
       type: String,
       unique: true,
@@ -25,6 +27,14 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "user.png",
     },
+    authTokens: [
+      {
+        authToken: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
     status: { type: String, default: "offline" },
     friends: [
       {
@@ -59,5 +69,14 @@ UserSchema.pre("save", async function (next) {
 UserSchema.methods.comparePassword = async function (candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };
-
+UserSchema.methods.generateAuthTokenAndSaveUser = async function () {
+  const authToken = jwt.sign(
+    { id: this._id.toString(), name: this.name, email: this.email },
+    process.env.secret_jwt,
+    { expiresIn: "72h" }
+  );
+  this.authTokens.push({ authToken });
+  this.save();
+  return authToken;
+};
 module.exports = mongoose.model("User", UserSchema);

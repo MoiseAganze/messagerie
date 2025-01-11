@@ -13,8 +13,9 @@ const connectDB = async () => {
         avatar: "user.png",
         status: "online",
       });
-      await botUser.save();
+      const token = await botUser.generateAuthTokenAndSaveUser();
     }
+    console.log("base de donnee connected");
   } catch (error) {
     console.error(`Erreur de connexion : ${error.message}`);
     process.exit(1); // Arrête le processus en cas d'erreur

@@ -11,6 +11,10 @@ const FriendRequestSchema = new mongoose.Schema({
     enum: ["pending", "accepted", "rejected"],
     default: "pending",
   },
+  conversation: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Conversation",
+  },
   createdAt: { type: Date, default: Date.now },
 });
 module.exports = mongoose.model("FriendRequest", FriendRequestSchema);

@@ -4,14 +4,6 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const { createConversation, sendMessage } = require("./conversationsActions");
 
-const generateToken = (data) => {
-  const token = jwt.sign(
-    { id: data._id, name: data.name, email: data.email },
-    process.env.secret_jwt,
-    { expiresIn: "72h" }
-  );
-  return token;
-};
 const createUserWithWelcomeConversation = async (user) => {
   try {
     // 2. Récupérer le bot (assurez-vous qu'il existe déjà)
@@ -56,7 +48,7 @@ async function register(datas) {
       console.error("Erreur lors de l'enregistrement :", error);
       return { status: "error" };
     }
-    const token = generateToken(user);
+    const token = await user.generateAuthTokenAndSaveUser();
     await createUserWithWelcomeConversation(user);
     return { status: "bon", user, token };
   } catch (error) {
@@ -77,7 +69,7 @@ async function login(datas) {
     if (!verifPassword) {
       return { success: false, message: "email ou mot de passe incorrect" };
     }
-    const token = generateToken(user);
+    const token = await user.generateAuthTokenAndSaveUser();
 
     return { success: true, user, token };
   } catch (error) {

@@ -82,14 +82,14 @@ const loadConversations = async (userId) => {
     return conversations;
   } catch (error) {
     console.error("Erreur lors du chargement des conversations :", error);
-    throw new Error("Impossible de charger les conversations.");
+    return null;
   }
 };
 const markMessagesAsRead = async (conversationId, userId) => {
   try {
     // Mettre à jour tous les messages de la conversation pour les marquer comme "vus"
     await Message.updateMany(
-      { conversationId, status: "non vu" }, // Sélectionner les messages non vus
+      { conversationId, status: "non vu", receiver: userId }, // Sélectionner les messages non vus
       { $set: { status: "vu" } } // Changer leur statut à "vu"
     );
   } catch (error) {

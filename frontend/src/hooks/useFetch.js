@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "../config/baseApi";
 
-export const useFetch = (url) => {
+export const useFetch = (url, nav) => {
   const [datas, setDatas] = useState(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -9,11 +9,12 @@ export const useFetch = (url) => {
       api
         .get(url)
         .then((res) => {
-          console.log(res.data);
           setDatas(res.data);
+          console.log(res.data);
         })
         .catch((err) => {
           console.log(err);
+          nav("/login");
         })
         .finally(() => setLoading(false));
     };

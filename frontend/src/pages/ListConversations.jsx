@@ -4,6 +4,7 @@ import { formatHourMinute } from "../utils/formatsDate";
 import { useFetch } from "../hooks/useFetch";
 import { reduceText } from "../utils/reduceText";
 import { whoIsFriend } from "../utils/whoIsFriend";
+import { useNavigate } from "react-router-dom";
 
 export default function ListConversations({
   open,
@@ -12,13 +13,16 @@ export default function ListConversations({
   setConversation,
   user_data,
   setFriend,
+  set_loading_messages,
+  setConversationId,
 }) {
   const [selected, setSelected] = useState(null);
   const handleSelect = (item) => {
     setSelected(item);
   };
   const Message = ({ conversation }) => {
-    const { datas, loading } = useFetch(`/messages/${conversation._id}`);
+    const nav = useNavigate();
+    const { datas, loading } = useFetch(`/messages/${conversation._id}`, nav);
 
     return (
       <div
@@ -26,7 +30,9 @@ export default function ListConversations({
           setOpen(false);
           setConversation(datas);
           handleSelect(conversation._id);
+          setConversationId(conversation._id);
           setFriend(whoIsFriend(user_data.id, conversation.participants));
+          set_loading_messages(false);
         }}
         className={`
           ${selected == conversation._id && "bg-base-100"} 
@@ -47,40 +53,36 @@ export default function ListConversations({
             <p className="text-base font-bold">
               {whoIsFriend(user_data.id, conversation.participants).name}
             </p>
-            <p
-              className={`text-sm ${
-                conversation.status == "vu" ? "" : "text-accent font-bold"
-              }`}
-            >
-              {formatHourMinute(conversation.lastMessage.createdAt)}
-            </p>
+            {conversation.lastMessage && (
+              <p
+                className={`text-sm ${
+                  conversation.status == "vu" ? "" : "text-accent font-bold"
+                }`}
+              >
+                {formatHourMinute(conversation.lastMessage.createdAt)}
+              </p>
+            )}
           </div>
-          {1 == 0 ? (
-            <p className="text-accent animate-pulse">
-              ecrit {"  "}
-              <span className="text-3xl font-extrabold animate-pulse">...</span>
-            </p>
-          ) : (
-            <p>{reduceText(conversation.lastMessage.text, 20)}</p>
-          )}
+          {conversation.lastMessage &&
+            (1 == 0 ? (
+              <p className="text-accent animate-pulse">
+                ecrit {"  "}
+                <span className="text-3xl font-extrabold animate-pulse">
+                  ...
+                </span>
+              </p>
+            ) : (
+              <p>{reduceText(conversation.lastMessage.text, 20)}</p>
+            ))}
         </button>
       </div>
     );
   };
   return (
-    <div
-      className={`absolute -left-96 z-40 top-0 lg:static ${
-        open ? "translate-x-96" : "translate-x-0"
-      } w-96 lg:flex justify-center bg-base-300 h-screen transition`}
-    >
-      <div className="w-full min-height-screen bg-gray">
-        <Navbar2 />
-        <div className="flex flex-col gap-1 mt-3 overflow-x-hidden">
-          {conversations?.map((item, i) => (
-            <Message key={i} conversation={item} />
-          ))}
-        </div>
-      </div>
+    <div className="flex flex-col gap-1 mt-3 overflow-x-hidden">
+      {conversations?.map((item, i) => (
+        <Message key={i} conversation={item} />
+      ))}
     </div>
   );
 }

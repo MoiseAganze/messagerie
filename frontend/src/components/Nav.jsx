@@ -42,16 +42,29 @@ export function Navbar({ titre, handleOpen, online }) {
   );
 }
 
-export function Navbar2(params) {
+export function Navbar2({ set_side_index }) {
   return (
     <div className="navbar bg-base-300 flex justify-end gap-2">
+      <div className="tooltip tooltip-right" data-tip="messages">
+        <button className="btn btn-circle " onClick={() => set_side_index(0)}>
+          <img src="/mess.png" className="w-7 h-7" alt="" />
+        </button>
+      </div>
+      <div className="tooltip tooltip-right" data-tip="amis">
+        <button className="btn btn-circle" onClick={() => set_side_index(1)}>
+          <img src="/friends.png" className="w-10 h-10" alt="" />
+        </button>
+      </div>
       <div className="tooltip tooltip-right" data-tip="Invitations en attente">
-        <button className="btn btn-circle ">
+        <button className="btn btn-circle " onClick={() => set_side_index(2)}>
           <img src="/invite.png" className="w-10 h-10" alt="" />
         </button>
       </div>
       <div className="tooltip tooltip-right" data-tip="Ajouter un ami">
-        <button className="btn btn-circle ">
+        <button
+          className="btn btn-circle "
+          onClick={() => document.getElementById("my_modal_1").showModal()}
+        >
           <img src="/add.png" className="w-10 h-10" alt="" />
         </button>
       </div>
