@@ -7,7 +7,10 @@ module.exports = function (http) {
     cors: {
       origin: "https://messagerie-frontend.vercel.app", // Remplacez par l'URL de votre frontend
       methods: ["GET", "POST"],
+      allowedHeaders: ["Content-Type"],
+      credentials: true, // Si vous utilisez des cookies ou des sessions
     },
+    transports: ["websocket"],
   });
 
   io.on("connection", (socket) => {
