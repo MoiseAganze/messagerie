@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const host = "http://34.252.176.174:10000";
+const host = "https://34.252.176.174:10000";
 export const apiAuth = axios.create({
   baseURL: host,
 });
