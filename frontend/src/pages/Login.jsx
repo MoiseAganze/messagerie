@@ -7,7 +7,7 @@ const Login = () => {
   const nav = useNavigate();
   const { handleChange, handleSubmit, loading, datasForm } = useSubmit(
     { email: "", password: "" },
-    "http://localhost:10000/login",
+    "/login",
     "connecté",
     nav,
     "/"

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { apiAuth } from "../config/baseApi";
 
 export default function useSubmit(
   structure,
@@ -23,7 +24,7 @@ export default function useSubmit(
     var datas = datasForm;
     if (datas.cpassword) delete datas.cpassword;
     setLoading(true);
-    await axios
+    await apiAuth
       .post(api, datas)
       .then((res) => {
         console.log(res.data);

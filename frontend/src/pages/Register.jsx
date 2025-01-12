@@ -8,7 +8,7 @@ const Register = () => {
   const nav = useNavigate();
   const { handleChange, handleSubmit, loading, datasForm } = useSubmit(
     { name: "", email: "", password: "", cpassword: "" },
-    "http://localhost:10000/register",
+    "/register",
     "inscription reussi",
     nav,
     "/"
