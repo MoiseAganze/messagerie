@@ -5,7 +5,7 @@ let users = []; // Liste des utilisateurs connectés
 module.exports = function (http) {
   const io = require("socket.io")(http, {
     cors: {
-      origin: "http://localhost:5173", // Remplacez par l'URL de votre frontend
+      origin: "https://messagerie-frontend.vercel.app", // Remplacez par l'URL de votre frontend
       methods: ["GET", "POST"],
     },
   });
