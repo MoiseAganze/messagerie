@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const host = "http://localhost:10000";
+const host = "https://messagerie-nu.vercel.app";
 
 export const api = axios.create({
   baseURL: host,
