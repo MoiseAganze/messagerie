@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const host = "https://52.51.182.219";
+const host = process.env.BACKEND_HOST || "http://localhost:10000";
+
 export const apiAuth = axios.create({
   baseURL: host,
 });

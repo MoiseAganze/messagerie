@@ -1,5 +1,5 @@
 const corsOptions = {
-  origin: "https://messagerie-frontend.vercel.app",
+  origin: process.env.frontend || "http://localhost:5173",
   methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,

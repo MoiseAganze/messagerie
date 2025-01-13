@@ -3,9 +3,7 @@ const User = require("../models/User");
 
 const connectDB = async () => {
   const MONGO_URI =
-    process.env.NODE_ENV === "production"
-      ? process.env.MONGO_URI_PROD
-      : process.env.MONGO_URI_LOCAL;
+    process.env.MONGO_URI || "mongodb://localhost:27017/Messagerie";
   try {
     const conn = await mongoose.connect(MONGO_URI);
     const bot_exist = await User.exists({ name: "SiteBot" });

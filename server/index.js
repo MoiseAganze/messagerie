@@ -18,14 +18,23 @@ app.use(cors(corsOptions));
 app.use("/", authRoutes);
 app.use("/", otherRoutes);
 
-const options = {
-  key: fs.readFileSync("./ssl/52.51.182.219.key"),
-  cert: fs.readFileSync("./ssl/52.51.182.219.crt"),
-};
+let http;
+const ip_addr = process.env.backend_ip;
+if (process.env.en_ligne) {
+  const options = {
+    key: fs.readFileSync(`./ssl/${ip_addr}.key`),
+    cert: fs.readFileSync(`./ssl/${ip_addr}.crt`),
+  };
+  http = require("https").createServer(options, app);
+} else {
+  http = require("http").createServer(app);
+}
 
-const http = require("https").createServer(options, app);
 require("./socket/io")(http);
 
-http.listen(10000, "0.0.0.0", () => {
-  console.log("Serveur démarré sur le port 10000");
+const port = process.env.PORT || 10000;
+const hote_ip = process.env.hote_ip || "0.0.0.0";
+
+http.listen(port, hote_ip, () => {
+  console.log(`Serveur démarré sur le port ${port}`);
 });

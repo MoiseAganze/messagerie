@@ -1,7 +1,7 @@
 import { io } from "socket.io-client";
 
 // "undefined" means the URL will be computed from the `window.location` object
-const URL = "https://52.51.182.219";
+const URL = process.env.BACKEND_HOST || "http://localhost:10000";
 
 export const socket = io(URL, {
   withCredentials: true, // Important pour les sessions ou cookies
