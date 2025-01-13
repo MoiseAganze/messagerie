@@ -19,8 +19,8 @@ app.use("/", authRoutes);
 app.use("/", otherRoutes);
 
 const options = {
-  key: fs.readFileSync("/etc/ssl/private/52.51.182.219.key"),
-  cert: fs.readFileSync("/etc/ssl/certs/52.51.182.219.crt"),
+  key: fs.readFileSync("./ssl/52.51.182.219.key"),
+  cert: fs.readFileSync("./ssl/52.51.182.219.crt"),
 };
 
 const http = require("https").createServer(options, app);
