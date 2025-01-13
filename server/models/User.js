@@ -72,7 +72,7 @@ UserSchema.methods.comparePassword = async function (candidatePassword) {
 UserSchema.methods.generateAuthTokenAndSaveUser = async function () {
   const authToken = jwt.sign(
     { id: this._id.toString(), name: this.name, email: this.email },
-    process.env.secret_jwt,
+    process.env.secret_jwt || "sanji",
     { expiresIn: "72h" }
   );
   this.authTokens.push({ authToken });

@@ -5,8 +5,11 @@ const verifyToken = async (req, res, next) => {
   try {
     const authHeader = req.headers["authorization"];
     const token = authHeader.split(" ")[1];
-    const datas = jwt.verify(token, process.env.secret_jwt);
-    const user = await User.findOne({ _id: datas.id,'authTokens.authToken':token });
+    const datas = jwt.verify(token, process.env.secret_jwt || "sanji");
+    const user = await User.findOne({
+      _id: datas.id,
+      "authTokens.authToken": token,
+    });
     if (!user) {
       return res.status(401).json({ error: "problème d'authentification" });
     }
